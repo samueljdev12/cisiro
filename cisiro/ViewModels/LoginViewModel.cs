@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Routing.Constraints;
 
-namespace cisiro.ViewModels
+namespace cisiro.ViewModel
 {
-    public class LoginViewModels
+    public class LoginViewModel
     {
         public string Email { get; set; }   
 
