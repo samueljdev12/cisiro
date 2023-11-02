@@ -1,7 +1,19 @@
+using cisiro.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
+IConfiguration configuration;
+configuration = new ConfigurationBuilder().AddJsonFile("./config.json").Build();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// add our app context
+builder.Services.AddDbContext<AppDataContext>(options =>
+{
+    var connectionString = configuration.GetConnectionString("DBConnection");
+    options.UseSqlServer(connectionString);
+});
 
 var app = builder.Build();
 

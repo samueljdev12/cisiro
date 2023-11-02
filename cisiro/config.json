@@ -1,0 +1,12 @@
+{
+  "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms"
+  ],
+  "EnableDeveloperExceptions": "True",
+  "ConnectionStrings": { "DBConnection": "Server=DESKTOP-DTTIDPF;DataBase=Cisiro;Uid=sa;Password=sqlserver;Encrypt=False" }
+}
