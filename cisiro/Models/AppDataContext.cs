@@ -6,6 +6,7 @@ namespace cisiro.Models;
 public class AppDataContext:IdentityDbContext<AppliactionUser>
 {
     public DbSet<Appliaction> application { get; set; }
+    
 
     public AppDataContext(DbContextOptions<AppDataContext> options):base(options)
     {
