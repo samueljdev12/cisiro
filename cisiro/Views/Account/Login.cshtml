@@ -1,0 +1,43 @@
+﻿@model cisiro.ViewModels.LoginViewModels
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header text-center">
+                    @Html.ActionLink("Add a User", "Register", "Account", new { @class = "btn btn-primary" })
+                </div>
+
+                <div class="card-body">
+                    <form method="ApplicationUser">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td>
+                                    <label asp-for="Email" class="form-label">Email</label>
+                                </td>
+                                <td>
+                                    <input asp-for="Email" id="id1" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label asp-for="Password" class="form-label">Password</label>
+                                </td>
+                                <td>
+                                    <input asp-for="Password" id="id2" class="form-control" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </td>
+                            </tr>
+
+
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
