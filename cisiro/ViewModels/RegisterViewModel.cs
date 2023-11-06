@@ -6,11 +6,9 @@ namespace cisiro.ViewModels
     {
         [Required(ErrorMessage = "First name is required")]
         public string firstName { get; set; }
+        
         [Required(ErrorMessage = "last name is required")]
         public string lastName { get; set; }
-
-        [Required(ErrorMessage = "Qualification is required")]
-        public string qualification { get; set; }
 
         [Required(ErrorMessage = "email is required")]
         [EmailAddress]

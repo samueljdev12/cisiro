@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Routing.Constraints;
 
-namespace cisiro.ViewModel
+namespace cisiro.ViewModels
 {
     public class LoginViewModel
     {

@@ -43,7 +43,7 @@ namespace cisiro.Migrations
                     b.ToTable("application");
                 });
 
-            modelBuilder.Entity("cisiro.Models.AppliactionUser", b =>
+            modelBuilder.Entity("cisiro.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -104,10 +104,6 @@ namespace cisiro.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("mobileNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("qualification")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -259,7 +255,7 @@ namespace cisiro.Migrations
 
             modelBuilder.Entity("cisiro.Models.Appliaction", b =>
                 {
-                    b.HasOne("cisiro.Models.AppliactionUser", "candidate")
+                    b.HasOne("cisiro.Models.ApplicationUser", "candidate")
                         .WithMany()
                         .HasForeignKey("candidateId");
 
@@ -277,7 +273,7 @@ namespace cisiro.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("cisiro.Models.AppliactionUser", null)
+                    b.HasOne("cisiro.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -286,7 +282,7 @@ namespace cisiro.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("cisiro.Models.AppliactionUser", null)
+                    b.HasOne("cisiro.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -301,7 +297,7 @@ namespace cisiro.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("cisiro.Models.AppliactionUser", null)
+                    b.HasOne("cisiro.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -310,7 +306,7 @@ namespace cisiro.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("cisiro.Models.AppliactionUser", null)
+                    b.HasOne("cisiro.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,6 +1,7 @@
 using cisiro.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+
 
 var builder = WebApplication.CreateBuilder(args);
 IConfiguration configuration;
@@ -14,6 +15,14 @@ builder.Services.AddDbContext<AppDataContext>(options =>
     var connectionString = configuration.GetConnectionString("DBConnection");
     options.UseSqlServer(connectionString);
 });
+
+// builder.Services.AddIdentity<ApplicationUser, IdentityRole>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+    {
+        options.SignIn.RequireConfirmedEmail = false;
+    })
+    .AddEntityFrameworkStores<AppDataContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
