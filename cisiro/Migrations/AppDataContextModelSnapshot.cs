@@ -22,7 +22,7 @@ namespace cisiro.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("cisiro.Models.Appliaction", b =>
+            modelBuilder.Entity("cisiro.Models.Application", b =>
                 {
                     b.Property<long>("applicationId")
                         .ValueGeneratedOnAdd()
@@ -33,8 +33,16 @@ namespace cisiro.Migrations
                     b.Property<string>("candidateId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("degree")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<float?>("gpa")
                         .HasColumnType("real");
+
+                    b.Property<string>("university")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("applicationId");
 
@@ -99,7 +107,7 @@ namespace cisiro.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("latName")
+                    b.Property<string>("lastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -253,7 +261,7 @@ namespace cisiro.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("cisiro.Models.Appliaction", b =>
+            modelBuilder.Entity("cisiro.Models.Application", b =>
                 {
                     b.HasOne("cisiro.Models.ApplicationUser", "candidate")
                         .WithMany()

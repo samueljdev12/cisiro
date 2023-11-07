@@ -60,7 +60,7 @@ namespace cisiro.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = m.email, Email = m.email, firstName = m.firstName, latName = m.lastName,
+                    UserName = m.email, Email = m.email, firstName = m.firstName, lastName = m.lastName,
                      mobileNumber = m.mobileNumber
                 };
                 var result = await userManager.CreateAsync(user, m.password);

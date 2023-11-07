@@ -1,0 +1,33 @@
+@model List<cisiro.Models.ApplicationWithUserViewModel>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Applications</h2>
+            
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Application ID</th>
+                    <th>Candidate Name</th>
+                    <th>GPA</th>
+                    <th>University</th>
+                    <th>Degree</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Application.applicationId</td>
+                        <td>@item.CandidateName</td>
+                        <td>@item.Application.gpa</td>
+                        <td>@item.Application.university</td>
+                        <td>@item.Application.degree</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

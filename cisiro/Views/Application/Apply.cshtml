@@ -1,3 +1,49 @@
-﻿<div class="container-fluid bg-dark">
-    
+﻿@model cisiro.Models.Application
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h2>Apply</h2>
+
+            @using (Html.BeginForm("Apply", "Application", FormMethod.Post, new { @class = "needs-validation" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.candidate.firstName)
+                    @Html.TextBoxFor(model => model.candidate.firstName, new { @class = "form-control", @placeholder = "First Name", required = "required" })
+                    @Html.ValidationMessageFor(model => model.candidate.firstName)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.candidate.lastName)
+                    @Html.TextBoxFor(model => model.candidate.lastName, new { @class = "form-control", @placeholder = "First Name", required = "required" })
+                    @Html.ValidationMessageFor(model => model.candidate.lastName)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.candidate.Email)
+                    @Html.TextBoxFor(model => model.candidate.Email, new { @class = "form-control", @placeholder = "First Name", required = "required" })
+                    @Html.ValidationMessageFor(model => model.candidate.Email)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.candidate.mobileNumber)
+                    @Html.TextBoxFor(model => model.candidate.mobileNumber, new { @class = "form-control", @placeholder = "First Name", required = "required" })
+                    @Html.ValidationMessageFor(model => model.candidate.mobileNumber)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.degree)
+                    @Html.DropDownListFor(m => m.degree, Model.degrees, "Select your Degree", new {@class = "form-select", id = "iddD" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.university)
+                    @Html.DropDownListFor(m => m.university, Model.universities, "Select your University", new {@class = "form-select", id = "iddD" })
+                </div>
+
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary mt-3">Register</button>
+                </div>
+            }
+        </div>
+    </div>
 </div>
+
