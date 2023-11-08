@@ -16,26 +16,33 @@
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.candidate.lastName)
-                    @Html.TextBoxFor(model => model.candidate.lastName, new { @class = "form-control", @placeholder = "First Name", required = "required" })
+                    @Html.TextBoxFor(model => model.candidate.lastName, new { @class = "form-control", @placeholder = "Last Name", required = "required" })
                     @Html.ValidationMessageFor(model => model.candidate.lastName)
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.candidate.Email)
-                    @Html.TextBoxFor(model => model.candidate.Email, new { @class = "form-control", @placeholder = "First Name", required = "required" })
+                    @Html.TextBoxFor(model => model.candidate.Email, new { @class = "form-control", @placeholder = "Email", required = "required" })
                     @Html.ValidationMessageFor(model => model.candidate.Email)
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.candidate.mobileNumber)
-                    @Html.TextBoxFor(model => model.candidate.mobileNumber, new { @class = "form-control", @placeholder = "First Name", required = "required" })
+                    @Html.TextBoxFor(model => model.candidate.mobileNumber, new { @class = "form-control", @placeholder = "Mobile Number", required = "required" })
                     @Html.ValidationMessageFor(model => model.candidate.mobileNumber)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.gpa)
+                    @Html.DropDownListFor(m => m.gpa, Model.gpas, "Select your GPA", new {@class = "form-select", id = "iddD" })
+                    @Html.ValidationMessageFor(model => model.gpa)
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(m => m.degree)
                     @Html.DropDownListFor(m => m.degree, Model.degrees, "Select your Degree", new {@class = "form-select", id = "iddD" })
+                      @Html.ValidationMessageFor(model => model.degree)
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(m => m.university)
                     @Html.DropDownListFor(m => m.university, Model.universities, "Select your University", new {@class = "form-select", id = "iddD" })
+                      @Html.ValidationMessageFor(model => model.university)
                 </div>
 
 

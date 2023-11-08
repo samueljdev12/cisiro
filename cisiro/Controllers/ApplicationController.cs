@@ -40,6 +40,16 @@ namespace cisiro.Controllers
                 new SelectListItem("Master of AI", "Master of AI"),
                 new SelectListItem("Master of Information Technology", "Master of Information Technology")
             };
+            
+            //add gpas
+
+            application.gpas = new List<SelectListItem>();
+            
+                for (float gpa = 3.0f; gpa <= 5.0f; gpa += 0.1f)
+                {
+                application.gpas.Add(new SelectListItem(gpa.ToString("0.0"), gpa.ToString("0.0")));
+            }
+            
 
             // Populate user details
             var user = _userManager.FindByEmailAsync("samuel@gmail.com").Result;

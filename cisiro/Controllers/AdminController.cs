@@ -22,14 +22,23 @@ namespace cisiro.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationsWithUser = _db.application
-                .Join(
+                .AsEnumerable() // Convert to client-side evaluation
+                .GroupJoin(
                     _db.Users,
                     app => app.candidate.Id,
                     user => user.Id,
-                    (app, user) => new ApplicationWithUserViewModel
+                    (app, users) => new
                     {
                         Application = app,
-                        CandidateName = $"{user.firstName} {user.lastName}",
+                        Users = users.DefaultIfEmpty(),
+                    }
+                )
+                .SelectMany(
+                    x => x.Users,
+                    (app, user) => new ApplicationWithUserViewModel
+                    {
+                        Application = app.Application,
+                        CandidateName = user != null ? $"{user.firstName} {user.lastName}" : "Unknown",
                         // Include other properties as needed
                     }
                 )
@@ -37,5 +46,7 @@ namespace cisiro.Controllers
 
             return View(applicationsWithUser);
         }
+
+
     }
 }
