@@ -1,4 +1,5 @@
 ﻿using cisiro.Models;
+using cisiro.services;
 using cisiro.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ namespace cisiro.Controllers
         private RoleManager<IdentityRole> roleManager { get; }
         private SignInManager<ApplicationUser> signInManger { get; }
         private string role { get; set; }
+        public readonly string strKey;
 
         public AccountController(IConfiguration config, UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager, RoleManager<IdentityRole> _roleManager)
         {
@@ -20,6 +22,7 @@ namespace cisiro.Controllers
             signInManger = _signInManager;
             roleManager = _roleManager; 
             role = "Candidate";
+            strKey = configuration.GetValue<string>("SendGrikKey");
         }
         
         
@@ -38,6 +41,8 @@ namespace cisiro.Controllers
                 {
                     var user = await userManager.FindByEmailAsync(m.Email);
                     var userId = user.Id;
+                    var sid = HttpContext.Session.Id;
+                    HttpContext.Session.SetString("user_id", sid);
 
                     return RedirectToAction("index", "Home");
                 }
@@ -75,7 +80,13 @@ namespace cisiro.Controllers
                     await userManager.AddToRoleAsync(user, role);
                     // You can also sign the user in after registration if needed
                     // await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("index", "Home");
+                    var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account", new {userId = user.Id, token = token}, Request.Scheme);
+                    ViewBag.ErrorMessage = "You are almost there!";
+
+                    new Email(m.email, "from", "Confirm Email", confirmationLink.ToString(), "name", m.firstName, strKey);
+                    ViewBag.ErrorMessage += "\n Check your email " + m.email + "for link";
+                    return View("emails");
                 }
                 
                 foreach( var e in result.Errors)
@@ -88,6 +99,28 @@ namespace cisiro.Controllers
             }
 
             return View(m);
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = "User does not exists";
+                return View("Error");
+
+            }
+
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+
+                ViewBag.ErrorMessage = "Success";
+                return View("Login");
+            }
+
+             ViewBag.ErrorMessage = "Email not confirmed";
+            return View("Error");
         }
     }
 }

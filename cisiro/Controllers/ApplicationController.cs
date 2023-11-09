@@ -52,7 +52,7 @@ namespace cisiro.Controllers
             
 
             // Populate user details
-            var user = _userManager.FindByEmailAsync("samuel@gmail.com").Result;
+          var user = _userManager.FindByEmailAsync("User@gmail.com").Result;
 
             if (user != null)
             {

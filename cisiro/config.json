@@ -8,5 +8,5 @@
     "**/platforms"
   ],
   "EnableDeveloperExceptions": "True",
-  "ConnectionStrings": { "DBConnection": "Server=localhost;Database=Cisiro;Uid=sa;Password=Sa34836515@;Encrypt=False" }
+  "ConnectionStrings": { "DBConnection": "Server=DESKTOP-DTTIDPF;DataBase=Cisiro;Uid=sa;Password=sqlserver;Encrypt=False" }
 }
