@@ -1,39 +1,56 @@
 ﻿@model cisiro.ViewModels.LoginViewModel
-
+<style>
+    
+</style>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card mt-5">
-                <div class="card-header">
-                    @Html.ActionLink("Don't have an account? Register", "", "Account", new { @class = "btn btn-primary" })
-      
+            <div class="card mt-5 border-outline">
+                <div class="card-header text-center">
 
+                    <div class="logo">
+                        <div class="logo-circle">
+                            <span class="logo-text">CISIRO</span>
+                        </div>
+                    </div>
+                    @Html.ActionLink("Don't have an account? Register", "", "Account", new { @class = "btn btn-dark", style = "color: white" })
+
+                </div>
                 <div class="card-body border-2">
                     <form method="Post">
                         <div asp-validation-summary="All" class="text-danger"></div>
-                       
+                        <table class="table table-borderless">
+                            <tr>
+                                <td>
                                     <label asp-for="Email" class="form-label">Email</label>
-                                
+                                </td>
+                                <td>
                                     <input asp-for="Email" id="id1" class="form-control" />
                                     <span asp-validation-for="Email" class="text-danger"></span>
-                            
-                           
-                           
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <label asp-for="Password" class="form-label">Password</label>
-                                
+                                </td>
+                                <td>
                                     <input asp-for="Password" id="id2" class="form-control" />
                                     <span asp-validation-for="Password" class="text-danger"></span>
-                              
-                               <div class="text-center">
-                                     <button class="btn btn-primary mt-3">login</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-center">
+                                    <button type="submit" class="btn-primary">Login</button>
+                                </td>
+                            </tr>
 
-                               </div>
+                        </table>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-</div>
 </div>
