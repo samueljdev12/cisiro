@@ -6,8 +6,8 @@
         <div class="col-md-6">
             <div class="card mt-5">
                 <div class="card-header">
-                    @Html.ActionLink("Don't have an account? Register", "", "Account", new { @class = "btn btn-primary" })
-      
+                    @Html.ActionLink("Don't have an account? Register", "Register", "Account", new { @class = "btn btn-primary" })
+                    <p class="text-info m-2">All fields on this form are required</p>
 
                 <div class="card-body border-2">
                     <form method="Post">
@@ -15,14 +15,14 @@
                        
                                     <label asp-for="Email" class="form-label">Email</label>
                                 
-                                    <input asp-for="Email" id="id1" class="form-control" />
+                                    <input asp-for="Email" id="id1" class="form-control" required="required" />
                                     <span asp-validation-for="Email" class="text-danger"></span>
                             
                            
                            
                                     <label asp-for="Password" class="form-label">Password</label>
                                 
-                                    <input asp-for="Password" id="id2" class="form-control" />
+                                    <input asp-for="Password" id="id2" class="form-control" required="required"/>
                                     <span asp-validation-for="Password" class="text-danger"></span>
                               
                                <div class="text-center">

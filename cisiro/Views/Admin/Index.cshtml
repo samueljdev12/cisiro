@@ -23,12 +23,13 @@
                     <tr>
                         <td>@item.Application.applicationId</td>
                         <td>@item.CandidateName</td>
-                        <td>@item.Application.gpa</td>
+                        <td>@item.Application.gpa.ToString()</td>
                         <td>@item.Application.university</td>
                         <td>@item.Application.degree</td>
                         <td>@item.mobileNumber</td>
                         <td>@item.Email</td>
-                            <td>Send Email</td>
+                        <td>@Html.ActionLink("View Cover letter", "", "")</td>
+                         <td>@Html.ActionLink("Send Email", "SendEmail", "Admin", new { email = item.Email, name = item.CandidateName }, null)</td>
                     </tr>
                 }
                 </tbody>

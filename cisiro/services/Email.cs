@@ -1,30 +1,31 @@
-using SendGrid.Helpers.Mail;
-using SendGrid;
-
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace cisiro.services;
 
 public class Email
 {
-    public  Email(string toEmail, string fromEmail, string subject, string mailContent, 
-        string nameSender, string nameReceiver, string strKey)
-        {
-        Execute(toEmail, fromEmail, subject, mailContent, nameSender,
-            nameReceiver, strKey).Wait();
+   public Email(string toEmail, string subject, string message, string fromEmail, string appKey)
+   {
+      SendEmailAsync(toEmail, subject, message);
+   }
+   
+   static async Task SendEmailAsync(string toEmail, string subject, string message)
+   {
+      var emailMessage = new MimeMessage();
+      emailMessage.From.Add(new MailboxAddress("Jonah Samuel", "samueljonas922@gmail.com"));
+      emailMessage.To.Add(new MailboxAddress("Jonah Samuel", toEmail));
+      emailMessage.Subject = subject;
 
-        }
+      emailMessage.Body = new TextPart("plain")
+      {
+         Text = message
+      };
 
-    static async Task Execute(string toEmail, string fromEmail, string subject, string mailContent,
-        string nameSender, string nameReceiver, string strKey)
-    {
-        var apiKey = strKey;
-        var client = new SendGridClient(apiKey);
-        var from = new EmailAddress(fromEmail, nameSender);
-        var to = new EmailAddress(toEmail, nameReceiver);
-        var plainTextContent = mailContent;
-        var htmlContent = "<strong>" + plainTextContent + "</strong>";
-        var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-        var response = await client.SendEmailAsync(msg);
-    }
-
+      using var client = new SmtpClient();
+      await client.ConnectAsync("smtp.gmail.com", 587, false);
+      await client.AuthenticateAsync("samueljonas922@gmail.com", "gyrj ykjo gjhw flkk");
+      await client.SendAsync(emailMessage);
+      await client.DisconnectAsync(true);
+   }
 }

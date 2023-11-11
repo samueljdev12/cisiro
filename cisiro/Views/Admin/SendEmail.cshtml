@@ -1,0 +1,36 @@
+
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h2>Send Email</h2>
+
+            @using (Html.BeginForm("SendEmail", "Admin", FormMethod.Post, new { @class = "needs-validation" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label for="toEmail">To Email</label>
+                    <textarea class="form-control-plaintext" id="toEmail" rows="1" name="toEmail">@ViewBag.Email</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="emailContent">Email Content</label>
+                    @{
+                        var dynamicGreeting = $"Dear {@ViewBag.Name},";
+                    }
+                    <textarea class="form-control" id="emailContent" name="emailContent" rows="1" readonly>@dynamicGreeting</textarea>
+                </div>
+
+                <div class="form-group">
+                    <textarea class="form-control" id="additionalContent" name="additionalContent" rows="8" placeholder="Type your message here..."></textarea>
+                </div>
+                <textarea class="form-control" id="emailContent" name="emailContent" rows="1" readonly>Regards @ViewBag.sender</textarea>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary mt-3">Send Email</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

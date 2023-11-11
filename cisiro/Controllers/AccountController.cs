@@ -1,6 +1,7 @@
 ﻿using cisiro.Models;
 using cisiro.services;
 using cisiro.ViewModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,7 +45,7 @@ namespace cisiro.Controllers
                     var sid = HttpContext.Session.Id;
                     HttpContext.Session.SetString("user_id", sid);
 
-                    return RedirectToAction("index", "Home");
+                    return RedirectToAction("apply", "Application");
                 }
                 
                 ModelState.AddModelError("", "Invalid Credentials");
@@ -84,7 +85,7 @@ namespace cisiro.Controllers
                     var confirmationLink = Url.Action("ConfirmEmail", "Account", new {userId = user.Id, token = token}, Request.Scheme);
                     ViewBag.ErrorMessage = "You are almost there!";
 
-                    new Email(m.email, "from", "Confirm Email", confirmationLink.ToString(), "name", m.firstName, strKey);
+                    new Email(m.email, "Confirmation email", confirmationLink.ToString(), "Samueljonas922@gmail.com", "gyrj ykjo gjhw flkk");
                     ViewBag.ErrorMessage += "\n Check your email " + m.email + "for link";
                     return View("emails");
                 }
@@ -121,6 +122,64 @@ namespace cisiro.Controllers
 
              ViewBag.ErrorMessage = "Email not confirmed";
             return View("Error");
+        }
+        
+        
+        public async Task<IActionResult> Logout()
+        {
+            
+            await signInManger.SignOutAsync();
+
+            // Clear session variables
+            HttpContext.Session.Clear();
+
+            // Clear authentication cookies
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            return RedirectToAction("Login", "Account");
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> Edit()
+        {
+            // Retrieve user information from your data source
+            // For example, if you're using ASP.NET Identity:
+            var user = await userManager.GetUserAsync(User);
+
+            var editViewModel = new EditViewModel
+            {
+                FirstName = user.firstName,
+                LastName = user.lastName,
+                MobileNumber = user.mobileNumber,
+                Email = user.Email
+            };
+
+            return View(editViewModel);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Update user information in your data source
+                // For example, if you're using ASP.NET Identity:
+                var user = await userManager.GetUserAsync(User);
+
+                user.firstName = model.FirstName;
+                user.lastName = model.LastName;
+                user.mobileNumber = model.MobileNumber;
+                user.Email = model.Email;
+
+                await userManager.UpdateAsync(user);
+
+                // Redirect to a success page or another action
+                return View(model);
+            }
+
+            // If the model state is not valid, return to the edit page with validation errors
+            return View(model);
         }
     }
 }

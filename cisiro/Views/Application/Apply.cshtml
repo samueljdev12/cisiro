@@ -8,6 +8,14 @@
             @using (Html.BeginForm("Apply", "Application", FormMethod.Post, new { @class = "needs-validation" }))
             {
                 @Html.AntiForgeryToken()
+                
+                @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                {
+                    <div class="alert alert-danger">
+                        @ViewBag.ErrorMessage
+                    </div>
+                }
+                
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.candidate.firstName)
@@ -47,7 +55,7 @@
 
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary mt-3">Register</button>
+                    <button type="submit" class="btn btn-primary mt-3">Apply</button>
                 </div>
             }
         </div>

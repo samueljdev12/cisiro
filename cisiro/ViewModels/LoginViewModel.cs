@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Routing.Constraints;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace cisiro.ViewModels
 {
