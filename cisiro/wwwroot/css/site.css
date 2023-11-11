@@ -1,6 +1,6 @@
-html {
+/*html {
   font-size: 14px;
-}
+}*/
 
 @media (min-width: 768px) {
   html {
@@ -15,4 +15,93 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.container {
+    background: lightyellow;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background: #2BAE66;
+    color: #000000;
+    text-align: center;
+    font-size: 24px;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.form-group {
+    margin: 10px 0;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background: #9D2413;
+    color: #fff;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition: background 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background: #076832;
+    }
+
+input::placeholder {
+    background: rgba(255, 255, 150, 0.5);
+}
+
+.logo {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.logo-circle {
+    width: 60px;
+    height: 50px;
+    background: #97BC62;
+    border-radius: 50%; /* Makes it circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.logo-text {
+    font-size: 24px;
+    color: #fff;
+}
+.logo:hover {
+    transform: scale(1.1); /* Zoom in the logo container on hover */
+}
+.navbar {
+    background-color: black;
+}
+
+    .navbar a.navbar-brand,
+    .navbar .navbar-nav .nav-link .nav-item {
+        font-size: 20px;
+        color: #fff;
+    }
+
+.text-center {
+    text-align: center;
+}
+
+.display-4 {
+    color: #26cc00; 
 }
