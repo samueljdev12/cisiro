@@ -65,7 +65,7 @@ namespace cisiro.Controllers
         public IActionResult SendEmail(string toEmail, string emailContent, string additionalContent)
         {
 
-            new Email(toEmail, "OutCome of your Application", emailContent.ToString() + additionalContent.ToString(), "Samueljonas922@gmail.com", "gyrj ykjo gjhw flkk");
+            new Email(toEmail, "OutCome of your Application", emailContent.ToString() + additionalContent.ToString(), "Samueljonas922@gmail.com", "");
             return RedirectToAction("Success"); // Redirect to a success page
         }
 
