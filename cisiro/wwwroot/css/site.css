@@ -2,6 +2,7 @@
   font-size: 14px;
 }*/
 
+/*
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -67,12 +68,14 @@ input::placeholder {
     text-align: center;
     margin-top: 20px;
 }
+ */
 
+/*
 .logo-circle {
     width: 60px;
     height: 50px;
     background: #97BC62;
-    border-radius: 50%; /* Makes it circular */
+    border-radius: 50%; Makes it circular 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -86,7 +89,7 @@ input::placeholder {
     color: #fff;
 }
 .logo:hover {
-    transform: scale(1.1); /* Zoom in the logo container on hover */
+    transform: scale(1.1);  Zoom in the logo container on hover 
 }
 .navbar {
     background-color: black;
@@ -104,4 +107,9 @@ input::placeholder {
 
 .display-4 {
     color: #26cc00; 
+}
+*/
+
+.main{
+    min-height: 80vh;
 }

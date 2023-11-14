@@ -3,20 +3,8 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-12">
-            <div class="text-center ">
-                @Html.ActionLink("View Top10 Candidates only", "Qualified")
-            </div>
-            <div class="px-md-5">
-                @using (Html.BeginForm(FormMethod.Post, new {id = "search"}))
-                {
-                    <div class="input-group m-3">
-                        @Html.TextBox("Name", null, new {@id="idName", @class="form-control", placeholder="Search Candidate by first name"})
-                        <button class="btn btn-outline-primary rounded">Search</button>
-                    </div>
-                }
-            </div>
             <h2>Applications</h2>
-
+            
             <table class="table">
                 <thead>
                 <tr>
@@ -26,7 +14,7 @@
                     <th>University</th>
                     <th>Degree</th>
                     <th>Mobile</th>
-                    <th>Email</th>
+                     <th>Email</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,7 +29,7 @@
                         <td>@item.mobileNumber</td>
                         <td>@item.Email</td>
                         <td>@Html.ActionLink("View Cover letter", "", "")</td>
-                        <td>@Html.ActionLink("Send Email", "SendEmail", "Admin", new { email = item.Email, name = item.CandidateName }, null)</td>
+                         <td>@Html.ActionLink("Send Email", "SendEmail", "Admin", new { email = item.Email, name = item.CandidateName }, null)</td>
                     </tr>
                 }
                 </tbody>

@@ -2,6 +2,7 @@
 using cisiro.services;
 using cisiro.ViewModels;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -140,6 +141,7 @@ namespace cisiro.Controllers
             return RedirectToAction("Login", "Account");
         }
         
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit()
         {

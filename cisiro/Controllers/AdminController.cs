@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace cisiro.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -22,7 +22,7 @@ namespace cisiro.Controllers
         }
 
         // GET
-
+         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var applicationWithUser = (
@@ -43,6 +43,52 @@ namespace cisiro.Controllers
 
             ).ToList();
 
+
+            return View(applicationWithUser);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string Name)
+        {
+            // Assuming _db is your database context
+            var applicationWithUser = (
+                from app in _db.application
+                join user in _db.Users
+                    on app.candidate.Id equals user.Id into userGroup
+                from user in userGroup.DefaultIfEmpty()
+                where user != null && user.firstName == Name  // Use the Name parameter for filtering
+                orderby app.gpa descending 
+                select new ApplicationWithUserViewModel
+                {
+                    Application = app,
+                    CandidateName = $"{user.firstName} {user.lastName}",
+                    mobileNumber = user.mobileNumber,
+                    Email = user.Email,
+                }
+            ).ToList();
+
+            // Do something with the result, for example, pass it to the view
+            return View(applicationWithUser);
+        }
+
+
+        public async Task<IActionResult> Qualified()
+        {
+            var applicationWithUser = (
+                    from app in _db.application
+                    join user in _db.Users
+                        on app.candidate.Id equals user.Id into userGroup
+                    from user in userGroup.DefaultIfEmpty()
+                    orderby app.gpa descending 
+                    select new ApplicationWithUserViewModel
+                    {
+                        Application = app,
+                        CandidateName = user != null ? $"{user.firstName} {user.lastName}" : "Unknown",
+                        mobileNumber = user.mobileNumber, // Use the null-conditional operator
+                        Email = user.Email, // Use the null-conditional operator
+                    }
+                ).Take(10) // Take only the first 10 results
+                .ToList();
 
             return View(applicationWithUser);
         }

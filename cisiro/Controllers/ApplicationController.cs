@@ -53,29 +53,30 @@ namespace cisiro.Controllers
             {
                 application.gpas.Add(new SelectListItem(gpa.ToString("0.0"), gpa.ToString("0.0")));
             }
-
             
-            // Populate user details
-            var user = await _userManager.GetUserAsync(User);
-
-            if (user != null)
-            {
-                application.candidate = new ApplicationUser
-                {
-                    firstName = user.firstName,
-                    lastName = user.lastName,
-                    Email = user.Email,
-                    mobileNumber = user.mobileNumber
-                };
-            }
         }
 
        
         [HttpGet]
         public async Task<IActionResult> Apply()
         {
+            // Populate user details
+            var user = await _userManager.GetUserAsync(User);
+            
                 var applicationModel = new Application();
-                InitializeData(applicationModel);
+                if (user != null)
+                {
+                    applicationModel.candidate = new ApplicationUser
+                    {
+                        firstName = user.firstName,
+                        lastName = user.lastName,
+                        Email = user.Email,
+                        mobileNumber = user.mobileNumber
+                    };
+                }
+                
+            InitializeData(applicationModel);
+                 
                 return View(applicationModel); 
         }
 
