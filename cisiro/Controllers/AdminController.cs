@@ -9,22 +9,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace cisiro.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IConfiguration _configuration;
         private readonly AppDataContext _db;
+        private readonly string strKey;
 
         public AdminController(IConfiguration configuration, AppDataContext db)
         {
             _configuration = configuration;
             _db = db;
+            strKey = configuration.GetValue<string>("ApiKey");
         }
 
         // GET
          [HttpGet]
         public async Task<IActionResult> Index()
         {
+            if (!User.IsInRole("Admin"))
+            {
+                // User is not in the "Admin" role, show a message or redirect to a custom UI
+                ViewBag.Error = "You are not authorized to access this page.";
+                return RedirectToAction("UnAuthorized", "Errors"); // Specify the name of your custom unauthorized view
+            }
             var applicationWithUser = (
                 from app in _db.application
                 join user in _db.Users
@@ -42,7 +49,7 @@ namespace cisiro.Controllers
                 }
 
             ).ToList();
-
+            
 
             return View(applicationWithUser);
         }
@@ -111,7 +118,7 @@ namespace cisiro.Controllers
         public IActionResult SendEmail(string toEmail, string emailContent, string additionalContent)
         {
 
-            new Email(toEmail, "OutCome of your Application", emailContent.ToString() + additionalContent.ToString(), "Samueljonas922@gmail.com", "");
+            new Email(toEmail, "OutCome of your Application", emailContent.ToString() + additionalContent.ToString(), "Samueljonas922@gmail.com", strKey);
             return RedirectToAction("Success"); // Redirect to a success page
         }
 

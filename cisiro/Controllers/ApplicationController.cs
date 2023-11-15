@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace cisiro.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Candidate")]
     public class ApplicationController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

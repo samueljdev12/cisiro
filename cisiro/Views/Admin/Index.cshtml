@@ -7,10 +7,10 @@
                 @Html.ActionLink("View Top10 Candidates only", "Qualified")
             </div>
             <div class="px-md-5">
-                @using (Html.BeginForm(FormMethod.Post, new {id = "search"}))
+                @using (Html.BeginForm(FormMethod.Post, new { id = "search" }))
                 {
                     <div class="input-group m-3">
-                        @Html.TextBox("Name", null, new {@id="idName", @class="form-control", placeholder="Search Candidate by first name"})
+                        @Html.TextBox("Name", null, new { @id = "idName", @class = "form-control", placeholder = "Search Candidate by first name" })
                         <button class="btn btn-outline-primary rounded">Search</button>
                     </div>
                 }

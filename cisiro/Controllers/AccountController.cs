@@ -15,7 +15,7 @@ namespace cisiro.Controllers
         private RoleManager<IdentityRole> roleManager { get; }
         private SignInManager<ApplicationUser> signInManger { get; }
         private string role { get; set; }
-        public readonly string strKey;
+        private readonly string strKey;
 
         public AccountController(IConfiguration config, UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager, RoleManager<IdentityRole> _roleManager)
         {
@@ -24,7 +24,7 @@ namespace cisiro.Controllers
             signInManger = _signInManager;
             roleManager = _roleManager; 
             role = "Candidate";
-            strKey = configuration.GetValue<string>("SendGrikKey");
+            strKey = configuration.GetValue<string>("ApiKey");
         }
         
         
@@ -45,8 +45,15 @@ namespace cisiro.Controllers
                     var userId = user.Id;
                     var sid = HttpContext.Session.Id;
                     HttpContext.Session.SetString("user_id", sid);
+                    var role = await userManager.GetRolesAsync(user);
 
-                    return RedirectToAction("apply", "Application");
+                    if (role.Contains("Admin"))
+                    {
+                        return RedirectToAction("Index", "Admin");
+                    }if (role.Contains("Candidate"))
+                    {
+                        return RedirectToAction("apply", "Application");
+                    }
                 }
                 
                 ModelState.AddModelError("", "Invalid Credentials");
@@ -86,7 +93,7 @@ namespace cisiro.Controllers
                     var confirmationLink = Url.Action("ConfirmEmail", "Account", new {userId = user.Id, token = token}, Request.Scheme);
                     ViewBag.ErrorMessage = "You are almost there!";
 
-                    new Email(m.email, "Confirmation email", confirmationLink.ToString(), "Samueljonas922@gmail.com", "");
+                    new Email(m.email, "Confirmation email", confirmationLink.ToString(), "Samueljonas922@gmail.com", strKey);
                     ViewBag.ErrorMessage += "\n Check your email " + m.email + "for link";
                     return View("emails");
                 }
@@ -141,7 +148,7 @@ namespace cisiro.Controllers
             return RedirectToAction("Login", "Account");
         }
         
-        [Authorize]
+        [Authorize(Roles = "Candidate")]
         [HttpGet]
         public async Task<IActionResult> Edit()
         {
@@ -160,6 +167,7 @@ namespace cisiro.Controllers
             return View(editViewModel);
         }
         
+        [Authorize(Roles = "Candidate")]
         [HttpPost]
         public async Task<IActionResult> Edit(EditViewModel model)
         {
