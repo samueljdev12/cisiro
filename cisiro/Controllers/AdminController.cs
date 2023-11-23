@@ -132,7 +132,7 @@ namespace cisiro.Controllers
                 return View("UnAuthorized");
             }
 
-            new Email(toEmail, "OutCome of your Application", emailContent.ToString() + "\n" + additionalContent.ToString(), "Samueljonas922@gmail.com", strKey);
+            new Email(toEmail, "OutCome of your Application", emailContent.ToString() + "\n" + additionalContent.ToString(), "", strKey);
             return RedirectToAction("Success"); // Redirect to a success page
         }
 

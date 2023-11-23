@@ -95,7 +95,7 @@ namespace cisiro.Controllers
                     var confirmationLink = Url.Action("ConfirmEmail", "Account", new {userId = user.Id, token = token}, Request.Scheme);
                     ViewBag.ErrorMessage = "You are almost there!";
 
-                    new Email(m.email, "Confirmation email", confirmationLink.ToString(), "Samueljonas922@gmail.com", strKey);
+                    new Email(m.email, "Confirmation email", confirmationLink.ToString(), "", strKey);
                     ViewBag.ErrorMessage += "\n Check your email " + m.email + " for confirmation link";
                     return View("emails");
                 }
