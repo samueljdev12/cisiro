@@ -28,9 +28,7 @@ namespace cisiro.Controllers
         {
             if (!User.IsInRole("Admin"))
             {
-                // User is not in the "Admin" role, show a message or redirect to a custom UI
-                ViewBag.Error = "You are not authorized to access this page.";
-                return RedirectToAction("UnAuthorized", "Errors"); // Specify the name of your custom unauthorized view
+                return View("UnAuthorized");
             }
             var applicationWithUser = (
                 from app in _db.application
@@ -57,6 +55,10 @@ namespace cisiro.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string Name)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return View("UnAuthorized");
+            }
             // Assuming _db is your database context
             var applicationWithUser = (
                 from app in _db.application
@@ -81,6 +83,10 @@ namespace cisiro.Controllers
 
         public async Task<IActionResult> Qualified()
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return View("UnAuthorized");
+            }
             var applicationWithUser = (
                     from app in _db.application
                     join user in _db.Users
@@ -103,6 +109,10 @@ namespace cisiro.Controllers
         [HttpGet]
         public IActionResult SendEmail(string email, string name)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return View("UnAuthorized");
+            }
             var userClaimsPrincipal = User;
 
             // Retrieve the user's first name from the FirstName claim (assuming you added this claim during user registration or login)
@@ -117,13 +127,21 @@ namespace cisiro.Controllers
         [HttpPost]
         public IActionResult SendEmail(string toEmail, string emailContent, string additionalContent)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return View("UnAuthorized");
+            }
 
-            new Email(toEmail, "OutCome of your Application", emailContent.ToString() + additionalContent.ToString(), "Samueljonas922@gmail.com", strKey);
+            new Email(toEmail, "OutCome of your Application", emailContent.ToString() + "\n" + additionalContent.ToString(), "Samueljonas922@gmail.com", strKey);
             return RedirectToAction("Success"); // Redirect to a success page
         }
 
         public IActionResult Success()
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return View("UnAuthorized");
+            }
             return View();
         }
     }

@@ -52,13 +52,6 @@
                     @Html.DropDownListFor(m => m.university, Model.universities, "Select your University", new {@class = "form-select", id = "iddD" })
                     @Html.ValidationMessageFor(model => model.university)
                 </div>
-                
-                <div class="form-group">
-                    @Html.LabelFor(model => model.coverLetter)
-                    @Html.TextAreaFor(model => model.coverLetter, new { @class = "form-control", @placeholder = "Cover letter", @rows="10", required = "required" })
-                    @Html.ValidationMessageFor(model => model.coverLetter)
-                </div>
-
 
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary mt-3">Apply</button>

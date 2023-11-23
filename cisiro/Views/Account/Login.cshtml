@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <div class="card mt-5">
                 <div class="card-header">
-                    @Html.ActionLink("Don't have an account? Register", "", "Account", new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Don't have an account? Register", "Register", "Account", new { @class = "btn btn-primary text-center" })
       
 
                 <div class="card-body border-2">
@@ -25,10 +25,13 @@
                                     <input asp-for="Password" id="id2" class="form-control" />
                                     <span asp-validation-for="Password" class="text-danger"></span>
                               
-                               <div class="text-center">
-                                     <button class="btn btn-primary mt-3">login</button>
+                                    <div class="text-center mb-3">
+                                        <button class="btn btn-primary mt-3">login</button>
 
-                               </div>
+                                    </div>          
+                                    <div class="">
+                                        @Html.ActionLink("Forgot Password? Reset here", "forgotPassword")
+                                    </div>
                     </form>
                 </div>
             </div>

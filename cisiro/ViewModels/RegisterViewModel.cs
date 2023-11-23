@@ -6,16 +6,14 @@ namespace cisiro.ViewModels
     {
         [Display(Name = "First name")]
         [Required(ErrorMessage = "First name is required")]
-        
         public string firstName { get; set; }
         
         [Display(Name = "Last name")]
         [Required(ErrorMessage = "last name is required")]
         public string lastName { get; set; }
-
+        
         [Required(ErrorMessage = "email is required")]
         [EmailAddress]
-        
         [Display(Name = "Email")]
         public string email { get; set; }
         
@@ -24,7 +22,7 @@ namespace cisiro.ViewModels
         [Required(ErrorMessage = "mobile number is required")]
         public string mobileNumber { get; set; }
         
-         [Display(Name = "Password")]
+        [Display(Name = "Password")]
         [Required(ErrorMessage = "Password is required")]
         [DataType(DataType.Password)]
         public string password { get; set; }

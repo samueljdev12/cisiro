@@ -33,10 +33,6 @@ namespace cisiro.Migrations
                     b.Property<string>("candidateId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("coverLetter")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("degree")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

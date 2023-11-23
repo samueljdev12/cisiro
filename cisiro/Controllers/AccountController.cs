@@ -16,9 +16,11 @@ namespace cisiro.Controllers
         private SignInManager<ApplicationUser> signInManger { get; }
         private string role { get; set; }
         private readonly string strKey;
+        private readonly AppDataContext _db;
 
-        public AccountController(IConfiguration config, UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager, RoleManager<IdentityRole> _roleManager)
+        public AccountController(IConfiguration config, UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager, RoleManager<IdentityRole> _roleManager, AppDataContext db)
         {
+            _db = db;
             userManager = _userManager;
             configuration = config;
             signInManger = _signInManager;
@@ -94,7 +96,7 @@ namespace cisiro.Controllers
                     ViewBag.ErrorMessage = "You are almost there!";
 
                     new Email(m.email, "Confirmation email", confirmationLink.ToString(), "Samueljonas922@gmail.com", strKey);
-                    ViewBag.ErrorMessage += "\n Check your email " + m.email + "for link";
+                    ViewBag.ErrorMessage += "\n Check your email " + m.email + " for confirmation link";
                     return View("emails");
                 }
                 
@@ -128,24 +130,31 @@ namespace cisiro.Controllers
                 return View("Login");
             }
 
-             ViewBag.ErrorMessage = "Email not confirmed";
+            ViewBag.ErrorMessage = "Email not confirmed";
             return View("Error");
         }
         
         
         public async Task<IActionResult> Logout()
         {
-            
-            await signInManger.SignOutAsync();
 
-            // Clear session variables
-            HttpContext.Session.Clear();
+            try
+            {
+                await signInManger.SignOutAsync();
 
-            // Clear authentication cookies
-            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+                // Clear session variables
+                HttpContext.Session.Clear();
 
-            return RedirectToAction("Login", "Account");
+                // Clear authentication cookies
+                await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+                return RedirectToAction("Login", "Account");
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Error", "Home");
+            }
         }
         
         [Authorize(Roles = "Candidate")]
@@ -154,17 +163,27 @@ namespace cisiro.Controllers
         {
             // Retrieve user information from your data source
             // For example, if you're using ASP.NET Identity:
-            var user = await userManager.GetUserAsync(User);
-
-            var editViewModel = new EditViewModel
+            try
             {
-                FirstName = user.firstName,
-                LastName = user.lastName,
-                MobileNumber = user.mobileNumber,
-                Email = user.Email
-            };
+                var user = await userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
 
-            return View(editViewModel);
+                var editViewModel = new EditViewModel
+                {
+                    FirstName = user.firstName,
+                    LastName = user.lastName,
+                    MobileNumber = user.mobileNumber,
+                    Email = user.Email
+                };
+                return View(editViewModel);
+            }
+            catch (Exception e)
+            {
+                return View("Error");
+            }
         }
         
         [Authorize(Roles = "Candidate")]
@@ -175,20 +194,145 @@ namespace cisiro.Controllers
             {
                 // Update user information in your data source
                 // For example, if you're using ASP.NET Identity:
-                var user = await userManager.GetUserAsync(User);
+                try
+                {
+                    var user = await userManager.GetUserAsync(User);
+                    if (user == null)
+                    {
+                        return RedirectToAction("Error", "Home");
+                    }
+                    user.firstName = model.FirstName;
+                    user.lastName = model.LastName;
+                    user.mobileNumber = model.MobileNumber;
+                    user.Email = model.Email;
 
-                user.firstName = model.FirstName;
-                user.lastName = model.LastName;
-                user.mobileNumber = model.MobileNumber;
-                user.Email = model.Email;
+                    await userManager.UpdateAsync(user);
 
-                await userManager.UpdateAsync(user);
-
-                // Redirect to a success page or another action
-                return View(model);
+                    // Redirect to a success page or another action
+                    return View(model);
+                }
+                catch (Exception e)
+                {
+                    return View("Error");
+                }
             }
 
             // If the model state is not valid, return to the edit page with validation errors
+            return View(model);
+        }
+       
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            if (!User.IsInRole("Candidate"))
+            {
+                return View("UnAuthorized");
+            }
+            try
+            {
+                var user = await userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+
+                // Assuming _db is your database context
+                var userApplication = _db.application.FirstOrDefault(app => app.candidate.Id == user.Id);
+
+                var profileViewModel = new ProfileViewModel
+                {
+                    User = user,
+                    UserApplication = userApplication
+                };
+
+                return View(profileViewModel);
+            }
+            catch (Exception e)
+            {
+                return View("Error");
+            }
+        }
+
+        
+        [HttpGet]
+        public IActionResult forgotPassword()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> forgotPassword(ForgotPasswordViewModel model)
+        {
+            try
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if (user == null || !(await userManager.IsEmailConfirmedAsync(user)))
+                {
+                    // Don't reveal that the user does not exist or is not confirmed
+                    return RedirectToAction("Error", "Home");
+                }
+                
+                var Token = await userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { email = user.Email, Token }, protocol: HttpContext.Request.Scheme);
+                new Email(model.Email, "Confirmation email", callbackUrl.ToString(), "Samueljonas922@gmail.com", strKey);
+                return View("halfway");
+            }
+            catch(Exception e)
+            {
+                return View("Error");
+            }
+            
+            
+        }
+        
+        
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            // You may validate the token and email here if needed
+
+            var model = new ResetPasswordViewModel
+            {
+                Email = email,
+                Token = token
+            };
+
+            return View(model);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        // Password reset successful, you might want to redirect to a success page
+                        return View("success", "Account");
+                    }
+                    else
+                    {
+                        // Password reset failed, add errors to ModelState
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
+                }
+                else
+                {
+                    // User not found, you might want to show a generic message to avoid revealing valid emails
+                    ModelState.AddModelError(string.Empty, "Invalid attempt");
+                }
+            }
+
+            // If ModelState is not valid, return to the same view with the validation errors
             return View(model);
         }
     }

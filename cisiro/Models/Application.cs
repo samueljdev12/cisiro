@@ -15,10 +15,6 @@ public class Application
     public string university { get; set; }
     [Required(ErrorMessage = "Degree is required")]
     public string degree { get; set; }
-    
-    [DataType(DataType.MultilineText)]
-    [StringLength(500, MinimumLength =300, ErrorMessage = "The length of Author name should be between 300 & 500")]
-    public string coverLetter { get; set; }
     public List<SelectListItem> universities = new List<SelectListItem>();
     public List<SelectListItem> degrees = new List<SelectListItem>();
     public List<SelectListItem> gpas = new List<SelectListItem>();

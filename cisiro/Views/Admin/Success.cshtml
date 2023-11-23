@@ -1,2 +1,6 @@
-<h2>Success</h2>
-<p>Mail sent to @ViewBag.Email</p>
+<div class="container mt-5">
+    <div class="alert alert-success w-50 mx-auto" role="alert">
+        Email sent Successfully
+        @Html.ActionLink("<<<Go back", "Index", "Admin", new { @class = "btn btn-primary text-center" })
+    </div>
+</div>
